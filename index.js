@@ -4,6 +4,7 @@ import express from 'express';
 
 import { conectarDB } from './src/config/database/conection.js';
 import casasRoutes from './src/routes/casasRoutes.js';
+import ubicacionesRoutes from './src/routes/ubicacionRoutes.js';
 
 const app = express();
 
@@ -15,6 +16,7 @@ conectarDB();
 
 //routes
 app.use('/api/casas', casasRoutes);
+app.use('/api/ubicaciones', ubicacionesRoutes);
 
 // PORT config
 const PORT = 4000;
