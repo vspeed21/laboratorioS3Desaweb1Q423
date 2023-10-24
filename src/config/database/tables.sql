@@ -1,18 +1,88 @@
 -- Active: 1697072596370@@localhost@5432@postgres
 
-CREATE TABLE casas (
-  id SERIAL PRIMARY KEY,
-  nombre VARCHAR,
-  descripcion VARCHAR,
-  cantidad_habitaciones NUMERIC,
-  cantidad_wc NUMERIC,
-  precio NUMERIC,
-  ubicacion VARCHAR
-);
+-- DROP Table casas CASCADE;
 
-insert into casas
-(nombre, descripcion, cantidad_habitaciones, cantidad_wc, precio, ubicacion)
-values
-('casa en el lago', 'Hermosa casa en el lago cerca del parque cental', 2, 3, 3000, 'San pedro Sula, Honduras'),
-('casa de madera', 'Hermosa casa de madera junto al rio', 2, 1, 5000, 'Bosque Honduras'),
-('casa de madera', 'Casa moderna futuris', 3,4, 500000, 'Tegucigalpa, Honduras');
+CREATE TABLE
+    casas (
+        id SERIAL PRIMARY KEY,
+        nombre VARCHAR,
+        descripcion VARCHAR,
+        precio NUMERIC,
+        ubicacion_id INT REFERENCES ubicaciones(id)
+    );
+
+SELECT
+    casas.id,
+    casas.nombre,
+    casas.descripcion,
+    casas.precio,
+    ubicaciones.ubicacion,
+    rooms.cantidad_habitaciones,
+    rooms.cantidad_wc
+FROM casas
+    INNER JOIN ubicaciones ON casas.ubicacion_id = ubicaciones.id
+    INNER JOIN rooms ON casas.id = rooms.casa_id;
+
+CREATE TABLE
+    rooms (
+        id SERIAL PRIMARY KEY,
+        casa_id INT REFERENCES casas(id),
+        cantidad_habitaciones NUMERIC,
+        cantidad_wc NUMERIC
+    );
+
+CREATE TABLE
+    ubicaciones (
+        id SERIAL PRIMARY KEY,
+        ubicacion VARCHAR
+    );
+
+-- Insertar tres ubicaciones diferentes
+
+INSERT INTO
+    ubicaciones (ubicacion)
+VALUES ('San Pedro Sula'), ('Tegucigalpa'), ('Lomas del carmen'), ('Santa barbara'), ('Utila'), ('Gracias, Lempira');
+
+-- Insertar tres casas en ubicaciones distintas
+
+INSERT INTO
+    casas (
+        nombre,
+        descripcion,
+        precio,
+        ubicacion_id
+    )
+VALUES (
+        'Casa Ejemplo 1',
+        'Una casa espaciosa',
+        250000,
+        1
+    ), (
+        'Casa Ejemplo 2',
+        'Una casa moderna',
+        350000,
+        2
+    ), (
+        'Casa Ejemplo 3',
+        'Una casa acogedora',
+        180000,
+        4
+    ), (
+        'Casa Ejemplo 3',
+        'Una casa acogedora',
+        180000,
+        6
+    ), (
+        'Casa Ejemplo 3',
+        'Una casa acogedora',
+        180000,
+        5
+    );
+
+INSERT INTO
+    rooms (
+        casa_id,
+        cantidad_habitaciones,
+        cantidad_wc
+    )
+VALUES (1, 4, 2), (2, 3, 2), (3, 2, 3), (5, 3, 1);
