@@ -1,6 +1,7 @@
 // Victor Torres - T62241191
 
 import express from 'express';
+
 import { conectarDB } from './src/config/database/conection.js';
 import casasRoutes from './src/routes/casasRoutes.js';
 
