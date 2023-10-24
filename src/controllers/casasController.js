@@ -75,7 +75,80 @@ const getCasaId = async (req, res) => {
 
 }
 
+const agregarCasa = async (req, res) => {
+  const body = [
+    req.body.nombre,
+    req.body.descripcion,
+    req.body.precio,
+    req.body.ubicacion_id,
+  ]
+
+  const consulta = `
+  INSERT INTO casas (nombre, descripcion, precio, ubicacion_id)
+  VALUES ($1, $2, $3, $4);
+  returning * `;
+
+  try {
+    const result = await db.query(consulta, body);
+
+    res.status(200).json({
+      msg: 'Casa agregada existosamente',
+      hechoPor: 'Victor Torres',
+      total_registros: result.length,
+      casas: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: 'Se produjo un error al guardar la casa',
+      error: {
+        error: true,
+        msg: error.message,
+      },
+    });
+  }
+}
+
+const editarCasa = async (req, res) => {
+  const body = [
+    req.body.nombre,
+    req.body.descripcion,
+    req.body.precio,
+    req.body.ubicacion_id,
+    req.params.id,
+  ]
+
+  const consulta = `
+  UPDATE casas
+  SET nombre = $1,
+      descripcion = $2,
+      precio = $3,
+      ubicacion_id = $4
+  WHERE id = $5
+  RETURNING *`;
+
+  try {
+    const result = await db.query(consulta, body);
+
+    res.status(200).json({
+      msg: 'Casa actualizada existosamente',
+      hechoPor: 'Victor Torres',
+      total_registros: result.length,
+      casas: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: 'Se produjo un error al actualizar la casa',
+      error: {
+        error: true,
+        msg: error.message,
+      },
+    });
+  }
+}
+
 export {
   getCasas,
   getCasaId,
+  agregarCasa,
+  editarCasa
 }
