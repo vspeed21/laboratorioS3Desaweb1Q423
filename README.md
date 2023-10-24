@@ -1,13 +1,13 @@
 # API CASAS
 
 ## Configuración de base de datos
-En el archivo ```src/config/database/conection.js``` cambia los valores de las variables
+Cambia el nombre al archivo ```.env.template``` a ```.env``` y pon los valores correspondientes a tu conexión de postgres
 
 ```
-  1. username
-  2. password
-  3. host
-  4. database
+  USER
+  PASSWORD
+  HOST
+  DATABASE
 ```
 
 para conectarte a la base de datos local en tu computadora. Luego ejecuta las consultas SQL que estan en el archivo `src/config/database/tables.sql`
